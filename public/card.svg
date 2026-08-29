@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">SKYFALL</title>
+  <desc id="description">An angular white starfighter rises through a deep blue science-fiction sky.</desc>
+  <defs>
+    <radialGradient id="sky" cx="50%" cy="42%" r="70%">
+      <stop offset="0" stop-color="#12384a"/>
+      <stop offset="0.5" stop-color="#06141e"/>
+      <stop offset="1" stop-color="#010509"/>
+    </radialGradient>
+    <linearGradient id="beam" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#62f4ff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#62f4ff" stop-opacity=".9"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="12" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="grid" width="70" height="70" patternUnits="userSpaceOnUse"><path d="M70 0H0V70" fill="none" stroke="#62f4ff" stroke-opacity=".05"/></pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#sky)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <g fill="#dffcff" opacity=".6">
+    <circle cx="106" cy="140" r="2"/><circle cx="228" cy="460" r="1.5"/><circle cx="370" cy="92" r="1"/><circle cx="936" cy="117" r="2"/><circle cx="1090" cy="392" r="1.5"/><circle cx="816" cy="518" r="1"/>
+  </g>
+  <g transform="translate(600 332)" filter="url(#glow)">
+    <path d="M-10 86L-26 232H26L10 86Z" fill="url(#beam)" opacity=".75"/>
+    <path d="M0-136L34-42L114 52L42 34L22 106H-22L-42 34L-114 52L-34-42Z" fill="#effbff" stroke="#62f4ff" stroke-width="3"/>
+    <path d="M0-91L17-22L0 34L-17-22Z" fill="#0a2c3a"/>
+    <path d="M-80 44H-44M44 44H80" stroke="#ff9b54" stroke-width="7"/>
+  </g>
+  <g font-family="Segoe UI,Arial,sans-serif" text-anchor="middle">
+    <text x="600" y="92" fill="#effbff" font-size="58" font-weight="600" letter-spacing="12">SKYFALL</text>
+    <text x="600" y="126" fill="#62f4ff" font-size="14" font-weight="600" letter-spacing="5">MISSION 01 // COMBAT FLIGHT SYSTEM</text>
+  </g>
+  <path d="M54 54H190M54 54V122M1010 576H1146M1146 508V576" fill="none" stroke="#62f4ff" stroke-opacity=".45" stroke-width="2"/>
+</svg>
