@@ -1,67 +1,69 @@
-# COMP4020 static prototype template
+# SKYFALL
 
-A starter template for static-site prototypes in **COMP4020 / COMP8020 Agentic
-Coding Studio**. The course provisions a repo from this template for each
-deliverable --- you don't create it yourself. The `start` course skill clones it
-for you; from there, build your prototype and deploy it to GitHub Pages.
+SKYFALL is a colourful vertical shoot 'em up built as the COMP4020 Crit 5
+static prototype. The player pilots a continuously firing aircraft through ten
+authored levels, increasingly complex enemy formations, environmental hazards,
+upgrade choices, and mobile Boss encounters.
 
-## CI and Pages only turn on when you ship
+The prototype is written in TypeScript and rendered with the Canvas 2D API. It
+uses no game engine or third-party runtime.
 
-Your repo starts private, and both CI jobs (`check` and `deploy`) are gated on
-it being public. While private, a push to `main` runs nothing in CI ---
-`pnpm check` (below) is your feedback loop until then. When you're ready, the
-course's `/ship` skill flips the repo public, turns on GitHub Pages, and
-dispatches the deploy for you; there's nothing to configure in the Pages
-settings yourself. From that point, every push to `main` builds and deploys, and
-the deploy step prints your live URL and checks it returns 200.
+## Play
 
-## What gets marked
+- Move with the mouse, touch, WASD, or the arrow keys.
+- Weapons fire automatically.
+- Press `Space`, or tap the lightning button, when ultimate energy is full.
+- Do not let enemies escape the bottom of the combat area; escaped enemies
+  damage the player's hull.
+- Between levels, select one of three upgrades before continuing.
 
-The deployed site is the deliverable, assessed live in Chrome at two fixed
-viewports --- see the course website's
-[assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#marking-environment)
-for the details.
+The in-game **How to Play** page explains every pickup. In particular, the Bomb
+pickup clears normal enemies and enemy bullets but does not instantly defeat a
+Boss.
 
-## Quick start
+## Features
+
+- Ten levels with distinct waves, objectives, hazards, mini-Bosses, and Bosses
+- Five interface languages: English, Simplified Chinese, Japanese, Korean, and
+  Spanish
+- Persistent graphics, anti-aliasing, frame-rate, motion, sound, language, and
+  fullscreen settings
+- Mouse, touch, and keyboard input with responsive 3:4 presentation
+- Weapon, shield, repair, bomb, magnet, and ultimate-energy pickups
+- Upgrade, combo, score, shield, ultimate, and high-score systems
+- Object pooling, reusable collision grids, active-object lists, and
+  three-second projectile lifetimes for stable late-level performance
+
+## Run locally
+
+Requirements: Node.js and pnpm versions compatible with `mise.toml`.
 
 ```sh
-mise install       # supported path: install the template's Node and pnpm
 pnpm install
-pnpm dev             # local dev server
-pnpm check           # most of what CI runs (links, secrets and deploy are CI-only)
-pnpm check:evidence  # the process-evidence check CI runs before you ship
-pnpm build           # produce dist/ (what gets deployed)
-
-# reproduce CI's links check before you push
-pnpm dlx linkinator ./dist --silent --skip "^https?://(?!localhost|127)"
+pnpm dev
 ```
 
-`mise` is the course's recommended runtime manager. If you use another manager
-or the official installers, that is fine: provide the Node and pnpm versions in
-`mise.toml`, then run the same commands. Tutor support reproduces runtime
-problems with mise.
+Open <http://localhost:5173/>.
 
-## What's here
+## Validate
 
-- `index.html`, `styles.css`, `main.ts` --- a minimal starting site. Replace it.
-- `mise.toml` --- the tested Node and pnpm versions for this template.
-- `spec/` --- what the checks are for (`README.md`) and the shipped invariants
-  (`invariants.test.ts`); the spec tests you write live alongside them.
-- `CLAUDE.md` --- orients whoever works in this repo, you or a coding agent.
-  Yours to grow.
-- `PROCESS.md` --- a template for your process overview, showing the
-  cited-moment format. Replace it with your own; `pnpm check:evidence` verifies
-  your citations resolve.
-- `.github/workflows/checks.yml` --- the CI sensors that run on every push once
-  your repo is public, and the GitHub Pages deploy.
-- `.githooks/pre-commit` --- blocks any commit that contains something shaped
-  like an API key, so your COMP4020 key can't end up in a public repo. Installed
-  automatically by `pnpm install`.
+```sh
+pnpm check
+pnpm check:evidence
+pnpm build
+```
 
-This template is SSG-agnostic: plain HTML/CSS/TypeScript on Vite, so you can add
-Astro, Eleventy, or any static generator later without changing how it deploys.
-The course plugin's `stack` skill performs the swap for you — to the course
-default (Astro) or bare HTML/CSS — with the Pages base path, lockfile, and CI
-link check handled.
+`pnpm check` runs TypeScript checking, the production build, and the Vitest
+suite. The project currently includes 42 automated checks covering gameplay
+contracts, level data, localisation, responsive hit targets, and core systems.
 
-See the course site for how the checks map to each week of the course.
+## Project structure
+
+- `src/game/` — game loop, configuration, and shared types
+- `src/entities/` — player, enemies, Boss, projectiles, and pickups
+- `src/systems/` — levels, spawning, audio, hazards, upgrades, and input
+- `src/effects/` — background and pooled particle effects
+- `src/ui/` — Canvas HUD and menu screens
+- `src/i18n/` — the five-language interface copy
+- `spec/` — contract and regression tests
+

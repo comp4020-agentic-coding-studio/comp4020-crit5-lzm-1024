@@ -1,70 +1,75 @@
 # Process overview
 
-<!-- TEMPLATE: this file is a shape to fill in, not a form. Replace everything
-     in it with your own overview, and delete this comment — `pnpm
-     check:evidence` will remind you if it's still here. -->
-
-A reading-guide to how the work came together --- a map to your process, not an
-essay about it. Markers read this file and follow its citations; they don't
-trawl the repo for evidence you didn't point at, so if a moment mattered, cite
-it.
-
-This file is the shape; the course site's
-[assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#what-you-submit)
-is the requirement, and its
-[word counts](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#word-counts)
-cover every deliverable.
-
 ## What I built
 
-One paragraph: the thing, and the idea behind it.
+I built SKYFALL, a responsive vertical shoot 'em up that runs entirely in the
+browser. It combines ten authored levels, several enemy roles, moving Bosses,
+upgrade decisions, pickups, hazards, five languages, persistent settings, and
+mouse, touch, and keyboard controls. My central idea was to make a compact
+prototype feel like a complete arcade game: the visual polish, difficulty
+curve, rules, and technical performance all had to support the same fast,
+readable combat loop.
 
 ## The moments that mattered
 
-Three or four for an assignment; fewer is fine for a weekly prototype. Keep the
-list short so each moment has room to do all four jobs:
+### Turning repeated waves into authored progression
 
-1. **what happened** --- the problem, or the thing that went wrong
-2. **what you did instead of the obvious thing** --- the call you made, and why
-   it beat the obvious one
-3. **how you knew it was right** --- the check you ran, the viewport you looked
-   at, what you read before accepting the diff
-4. **the citation** --- a commit or commit range, a `CLAUDE.md` change, a check
-   that went from red to green, a prompt paired with the commit it produced
+The first design kept increasing enemy counts across too many similar levels.
+That produced repetition without giving the player new decisions. I reduced the
+structure to ten longer levels and gave each one a specific composition,
+objective, palette, movement pressure, hazard, and climax. Boss encounters use
+their own movement and rotating radial patterns rather than acting as stationary
+targets. I checked the level totals and minimum durations with contract tests,
+then played later levels using the wave debug display to confirm that enemies
+continued arriving without long empty gaps.
 
-Jobs 2 and 3 are the ones the repo can't tell a reader on its own, so they're
-where the marks are. The strongest moments are the ones where a correction
-landed in the **harness** --- the standards and checks your work has to satisfy
---- rather than in a retry: a rule added to `CLAUDE.md`, a check wired up, an
-attempt thrown away. Retrying until it passes is the routine case, and changing
-what the work runs against is the skilled one.
+> “现在后面关卡因为敌人数量太少，影响核心玩法体验了”
 
-Cite each moment as a link whose text is the commit hash or range and whose
-target is this repo's commit or compare URL, so a reader clicks straight to the
-evidence:
+Evidence: [`14557ba`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit5-lzm-1024/commit/14557bab17535c6486e08226b9e3f77d3ebd60e6)
 
-- one commit: [`a1b2c3d`](https://github.com/YOUR-ORG/YOUR-REPO/commit/a1b2c3d)
-- a range:
-  [`a1b2c3d...e4f5a6b`](https://github.com/YOUR-ORG/YOUR-REPO/compare/a1b2c3d...e4f5a6b)
+### Treating performance as part of the game design
 
-To pair a prompt with the commit it produced, quote the prompt (curated, not a
-full transcript) next to the citation:
+Late levels initially became slower as enemies, bullets, and effects
+accumulated. Simply reducing enemy counts would have weakened the core promise,
+so I kept the encounters and changed the implementation. Projectiles expire
+after three seconds; reusable pools avoid repeated allocation; collision uses a
+fixed spatial grid; projectile and particle work uses active-object lists; and
+shield drones query nearby grid cells instead of scanning every enemy. This
+changes the worst shield search from a nested whole-list search to a local
+neighbour query. I accepted the refactor only after TypeScript, the production
+build, all 42 tests, a Level 9 browser run, and the Boss debug encounter passed
+without runtime errors.
 
-> the prompt, verbatim
+> “保证敌人数量不变的情况下优化，变得不卡顿”
 
-Screenshots are welcome where one carries the verification better than a
-sentence does. Commit the file to this repo and link it with a **relative**
-path, which is what makes it render on GitHub: `![alt text](docs/before.png)`.
-Images don't count towards the word count and don't replace the citation.
+Evidence: [`14557ba`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit5-lzm-1024/commit/14557bab17535c6486e08226b9e3f77d3ebd60e6)
 
-## Before you ship
+### Making the interface explain the system
 
-`pnpm check:evidence` verifies your citations resolve to real commits, that a
-reflection entry the marker reads is in `reflections/`, and that your
-`CLAUDE.md` is there --- before a marker ever opens the file. It checks that
-your map is traceable, not that it is good: the marker judges whether your
-small, deliberately chosen set of moments shows real judgement and reflection. A
-green check is not a substitute for that curation.
+The game originally opened directly into combat and important behaviour was
+implicit. I added a proper main menu, a How to Play page, and settings that
+actually control graphics resolution, anti-aliasing, frame rate, motion,
+screen shake, sound, language, and fullscreen state. The rules page now names
+all six pickups and explicitly explains that the Bomb clears normal enemies and
+enemy bullets but does not instantly kill a Boss. I used one uniform layout
+scale inside the 3:4 canvas so desktop and mobile presentations preserve their
+geometry instead of stretching. I verified the rendered menus in the browser,
+including the Chinese rules page, rather than relying only on canvas
+coordinates in code.
 
-Images aren't checked: unlike a citation whose SHA doesn't resolve, a broken
-image is visible the moment this file is rendered on GitHub.
+> “一个比例，手机和网页都合适”
+
+Evidence: [`14557ba`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit5-lzm-1024/commit/14557bab17535c6486e08226b9e3f77d3ebd60e6)
+
+### Keeping decisions in the harness
+
+The carried-forward engineering rules require real-browser inspection,
+testable game logic, responsive verification, and one source of truth for each
+control. I converted the prototype's important promises into tests for level
+configuration, Boss movement and durability, bullet patterns, enemy escape,
+menu hit targets, upgrade pacing, and complete five-language copy. This made
+later refactors safer because the game could change internally while its
+contracts remained visible and executable.
+
+Evidence: [`07a2434...14557ba`](https://github.com/comp4020-agentic-coding-studio/comp4020-crit5-lzm-1024/compare/07a2434...14557bab17535c6486e08226b9e3f77d3ebd60e6)
+
